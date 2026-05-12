@@ -68,11 +68,19 @@ const player = {
   y: 380,
   width: 48,
   height: 72,
-  color: '#38bdf8',
+  color: '#8b5cf6',
+  paintName: 'Brandywine',
   wheel: 'sport',
   spoiler: 'wing',
   carModel: 'mustang',
   nitro: { charge: 100, active: false },
+};
+
+const carPreviewImages = {
+  mustang: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=950&q=80',
+  lamborghini: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=950&q=80',
+  ferrari: 'https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=950&q=80',
+  mclaren: 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=950&q=80',
 };
 
 const shop = {
@@ -99,6 +107,8 @@ function loadAccountData(account) {
   state.premiumAccess = account.premiumAccess ?? state.premiumAccess;
   state.buildName = account.buildName || state.buildName;
   player.color = account.color || player.color;
+  player.paintName = account.paintName || player.paintName;
+  player.carModel = account.carModel || player.carModel;
   player.wheel = account.wheel || player.wheel;
   player.spoiler = account.spoiler || player.spoiler;
   shop.engine.level = account.engineLevel || shop.engine.level;
@@ -118,6 +128,8 @@ function saveUserAccount() {
     premiumAccess: state.premiumAccess,
     buildName: state.buildName,
     color: player.color,
+    paintName: player.paintName,
+    carModel: player.carModel,
     wheel: player.wheel,
     spoiler: player.spoiler,
     engineLevel: shop.engine.level,
@@ -143,6 +155,8 @@ function loadSave() {
   state.premiumAccess = saved.premiumAccess ?? state.premiumAccess;
   state.buildName = saved.buildName || state.buildName;
   player.color = saved.color || player.color;
+  player.paintName = saved.paintName || player.paintName;
+  player.carModel = saved.carModel || player.carModel;
   player.wheel = saved.wheel || player.wheel;
   player.spoiler = saved.spoiler || player.spoiler;
   shop.engine.level = saved.engineLevel || shop.engine.level;
@@ -165,6 +179,8 @@ function saveProgress() {
       premiumAccess: state.premiumAccess,
       buildName: state.buildName,
       color: player.color,
+      paintName: player.paintName,
+      carModel: player.carModel,
       wheel: player.wheel,
       spoiler: player.spoiler,
       engineLevel: shop.engine.level,
@@ -295,18 +311,15 @@ function updateGarage() {
   nitroCostEl.textContent = getUpgradeCost('nitro');
   premiumBadge.classList.toggle('hidden', !state.premiumAccess);
 
+  carModelSelect.value = player.carModel;
+  const imageUrl = carPreviewImages[player.carModel] || carPreviewImages.mustang;
+  const modelLabel = carModelSelect.options[carModelSelect.selectedIndex]?.text || 'Mustang GT';
   previewPane.innerHTML = `
-    <div class="car-sprite" style="--car-color: ${player.color};">
-      <div class="car-body"></div>
-      <div class="car-window"></div>
-      <div class="headlight left"></div>
-      <div class="headlight right"></div>
-      <div class="taillight left"></div>
-      <div class="taillight right"></div>
-      <div class="car-spoiler ${player.spoiler}"></div>
-      <div class="wheel front ${player.wheel}"></div>
-      <div class="wheel rear ${player.wheel}"></div>
+    <div class="real-car-preview">
+      <img src="${imageUrl}" alt="${modelLabel}" loading="lazy" />
+      <div class="preview-image-badge">${modelLabel}</div>
     </div>
+    <div class="preview-paint-tag">${player.paintName || 'Candy Coat'}</div>
   `;
   updateHUD();
 }
@@ -685,9 +698,16 @@ function initSelectors() {
         return;
       }
       player.color = button.dataset.color;
+      player.paintName = button.dataset.name || player.paintName;
       saveProgress();
       updateGarage();
     });
+  });
+
+  carModelSelect.addEventListener('change', (event) => {
+    player.carModel = event.target.value;
+    saveProgress();
+    updateGarage();
   });
 
   document.querySelectorAll('[data-wheel]').forEach((button) => {
