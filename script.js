@@ -314,6 +314,7 @@ function updateGarage() {
   carModelSelect.value = player.carModel;
   const imageUrl = carPreviewImages[player.carModel] || carPreviewImages.mustang;
   const modelLabel = carModelSelect.options[carModelSelect.selectedIndex]?.text || 'Mustang GT';
+  previewPane.style.backgroundImage = `url('${imageUrl}')`;
   previewPane.innerHTML = `
     <div class="real-car-preview">
       <img src="${imageUrl}" alt="${modelLabel}" loading="lazy" />
@@ -795,4 +796,3 @@ function init() {
   requestAnimationFrame(loop);
 }
 
-init();
