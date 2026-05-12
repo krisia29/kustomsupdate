@@ -299,6 +299,9 @@ button:hover {
   display: grid;
   place-items: center;
   perspective: 1200px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .car-sprite {
@@ -476,6 +479,7 @@ button:hover {
   overflow: hidden;
   box-shadow: 0 28px 68px rgba(0, 0, 0, 0.28);
   position: relative;
+  z-index: 1;
 }
 
 .real-car-preview img {
@@ -505,6 +509,7 @@ button:hover {
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.12), transparent 38%);
+  z-index: 0;
 }
 
 .build-preview .preview-body::before {
@@ -516,6 +521,7 @@ button:hover {
   pointer-events: none;
   mix-blend-mode: screen;
   animation: showroom-glow 8s ease-in-out infinite;
+  z-index: 0;
 }
 
 .car-sprite {
