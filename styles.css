@@ -469,6 +469,37 @@ button:hover {
   opacity: 0.94;
 }
 
+.real-car-preview {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 28px 68px rgba(0, 0, 0, 0.28);
+  position: relative;
+}
+
+.real-car-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  min-height: 180px;
+}
+
+.preview-image-badge {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(8, 12, 30, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #eef2ff;
+  font-weight: 700;
+  font-size: 0.86rem;
+  letter-spacing: 0.04em;
+}
+
 .build-preview .preview-body::after {
   content: '';
   position: absolute;
@@ -483,6 +514,8 @@ button:hover {
   background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.08), transparent 16%),
     linear-gradient(180deg, transparent 30%, rgba(255, 255, 255, 0.04) 32%, transparent 36%);
   pointer-events: none;
+  mix-blend-mode: screen;
+  animation: showroom-glow 8s ease-in-out infinite;
 }
 
 .car-sprite {
@@ -960,4 +993,15 @@ body.mobile-view .play-area {
 
 body.mobile-view .game-shell {
   width: min(100%, 720px);
+}
+
+@keyframes showroom-glow {
+  0%, 100% {
+    transform: translateX(-10%) scale(1);
+    opacity: 0.65;
+  }
+  50% {
+    transform: translateX(10%) scale(1.05);
+    opacity: 0.78;
+  }
 }
